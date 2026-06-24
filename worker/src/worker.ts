@@ -52,8 +52,13 @@ app.use('/*', async (c, next) => {
 	const msgs = i18n.getMessages(lang || c.env.DEFAULT_LANG);
 
 	// check header x-custom-auth
+	// NOTE(local patch): /admin/* is exempted from the site-wide password gate
+	// because it is already protected by the admin password (x-admin-auth, see
+	// the `/admin/*` middleware below). This lets third-party admin tools (e.g.
+	// the outlookemail aggregator) connect with only the admin password, since
+	// they have no field for the x-custom-auth site password.
 	const passwords = getPasswords(c);
-	if (!c.req.path.startsWith("/open_api") && !c.req.path.startsWith("/telegram/") && passwords && passwords.length > 0) {
+	if (!c.req.path.startsWith("/open_api") && !c.req.path.startsWith("/telegram/") && !c.req.path.startsWith("/admin/") && passwords && passwords.length > 0) {
 		const auth = c.req.raw.headers.get("x-custom-auth");
 		if (!auth || !passwords.includes(auth)) {
 			return c.text(msgs.CustomAuthPasswordMsg, 401)
