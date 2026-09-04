@@ -19,6 +19,7 @@
 
 ### Bug Fixes
 
+- fix: |Mail| Reject the message when storing it throws (e.g. `Exceeded maximum DB size`) instead of silently dropping it, so the sender retries or bounces
 - fix: |Frontend| Remove unsupported `data-onload` and `data-onerror` attributes from the AdSense script
 - fix: |Admin| Avoid briefly showing the Admin password dialog before access settings finish loading
 - fix: |Admin| Fix secondary tabs occasionally losing their active item, hiding content, and leaving the indicator offset after switching primary tabs

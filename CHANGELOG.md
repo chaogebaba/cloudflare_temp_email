@@ -19,6 +19,7 @@
 
 ### Bug Fixes
 
+- fix: |邮件| 修复 D1 写入抛出异常（如 `Exceeded maximum DB size`）时邮件被静默丢弃的问题，现在会拒信让发件方重试或退信
 - fix: |Frontend| 修复 AdSense 脚本包含不受支持的 `data-onload` 和 `data-onerror` 属性
 - fix: |Admin| 修复权限设置加载完成前短暂显示管理员密码输入框的问题
 - fix: |Admin| 修复切换一级标签页时二级标签页偶发无选中项、内容不显示及指示条偏移的问题

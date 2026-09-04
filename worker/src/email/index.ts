@@ -76,6 +76,12 @@ async function email(message: ForwardableEmailMessage, env: Bindings, ctx: Execu
         }
     }
     catch (error) {
+        // A D1 failure (notably "Exceeded maximum DB size") THROWS rather than
+        // returning success:false, so without this reject the worker returns
+        // normally, Cloudflare answers the sender 250 OK, and the mail is lost
+        // for good while Email Routing still logs it as "Handled". Rejecting
+        // makes the sender's MTA retry or bounce, so nothing vanishes silently.
+        message.setReject(`Failed save message to ${toAddress}`);
         console.error("save email error", error);
     }
 
